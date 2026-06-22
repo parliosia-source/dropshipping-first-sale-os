@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import StatusBadge from "@/components/shared/StatusBadge";
 import { useToast } from "@/components/ui/use-toast";
+import { getAgentForStep, accentClasses } from "@/lib/agents";
+import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function ActiveStep() {
   const { stepId } = useParams();
@@ -159,6 +161,22 @@ export default function ActiveStep() {
         <InfoCard icon={Lightbulb} title="Importance" content={step.importance} />
         <InfoCard icon={FileText} title="Livrable" content={step.livrable} />
       </div>
+
+      {/* Best agent for this step */}
+      {(() => {
+        const agent = getAgentForStep(step.ordre);
+        if (!agent) return null;
+        const accent = accentClasses[agent.accent] || accentClasses.primary;
+        return (
+          <div className={`rounded-2xl border p-4 flex items-center gap-3 ${accent.bg} ${accent.border}`}>
+            <AgentIcon name={agent.icon} className={`w-5 h-5 ${accent.text}`} />
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Rôle spécialisé pour cette étape</p>
+              <p className={`text-sm font-semibold ${accent.text}`}>{agent.name} — {agent.role}</p>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Checklist — main focus */}
       <div className="bg-card rounded-2xl border-2 border-primary/20 p-5 space-y-4">

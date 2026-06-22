@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Target, Package, Tag, Globe, Megaphone, CalendarClock, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Zap, Target, Package, Tag, Globe, Megaphone, CalendarClock, CheckCircle2, FileText, Sparkles, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/shared/ProgressBar";
 import StatusBadge from "@/components/shared/StatusBadge";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
+import { AGENTS, accentClasses } from "@/lib/agents";
+import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function Home() {
   const { activeStep, progress, doneCount, steps, loading } = useSteps();
@@ -113,6 +115,26 @@ export default function Home() {
             </Link>
           </div>
         )}
+      </div>
+
+      {/* Active support system */}
+      <div className="bg-card rounded-2xl border p-5">
+        <h2 className="text-sm font-semibold font-heading mb-1">Système d'assistance actif</h2>
+        <p className="text-xs text-muted-foreground mb-4">1 orchestrateur + 5 rôles spécialisés derrière votre coach</p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {AGENTS.map((agent) => {
+            const accent = accentClasses[agent.accent] || accentClasses.primary;
+            return (
+              <div key={agent.id} className={`rounded-xl border p-3 ${accent.bg} ${accent.border}`}>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <AgentIcon name={agent.icon} className={`w-4 h-4 ${accent.text}`} />
+                  <span className="text-sm font-semibold">{agent.name}</span>
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">{agent.description}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <Link to={activeStep ? "/active-step" : "/roadmap"}>

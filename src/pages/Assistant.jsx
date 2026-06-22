@@ -6,6 +6,8 @@ import ReactMarkdown from "react-markdown";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
 import StatusBadge from "@/components/shared/StatusBadge";
+import { getSpecializedAgents, accentClasses } from "@/lib/agents";
+import AgentIcon from "@/components/shared/AgentIcon";
 
 const quickButtons = [
   { label: "C'est fait", value: "C'est fait" },
@@ -62,6 +64,12 @@ export default function Assistant() {
       context += `\nPROCHAINE ÉTAPE: ${nextStep.ordre}. ${nextStep.nom} — ${nextStep.objectif}\n`;
     }
 
+    context += `\nRÔLES SPÉCIALISÉS INTERNES (adopte leur logique quand pertinent, mentionne le rôle utilisé):\n`;
+    context += `- Coach Niche: évalue niche (demande, différenciation, concurrence, viabilité)\n`;
+    context += `- Validateur Produit: valide produit (marge, fournisseur, sourcing, livraison, risques)\n`;
+    context += `- Builder Offre: structure offre (positionnement, bénéfices, objections, FAQ, page produit, pricing)\n`;
+    context += `- Stratégiste Créatif: angles pub, hooks, concepts UGC, variations de messaging\n`;
+    context += `- Analyste Acquisition: interprète métriques, identifie goulots (CTR, CPC, CVR), recommande actions\n`;
     return context;
   };
 
@@ -127,6 +135,19 @@ export default function Assistant() {
             <p className="text-xs text-muted-foreground mb-0.5">Prochaine étape</p>
             <p className="font-semibold truncate">{nextStep ? `${nextStep.ordre}. ${nextStep.nom}` : "—"}</p>
           </div>
+        </div>
+        {/* Specialized agents strip */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-3 mt-3 border-t">
+          <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">Rôles spécialisés :</span>
+          {getSpecializedAgents().map((agent) => {
+            const accent = accentClasses[agent.accent] || accentClasses.primary;
+            return (
+              <div key={agent.id} className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border flex-shrink-0 ${accent.bg} ${accent.border}`}>
+                <AgentIcon name={agent.icon} className={`w-3 h-3 ${accent.text}`} />
+                <span className="text-xs font-medium">{agent.shortName}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 

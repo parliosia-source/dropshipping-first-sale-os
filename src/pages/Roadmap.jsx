@@ -4,6 +4,8 @@ import { CheckCircle2, Circle, Loader2, AlertTriangle } from "lucide-react";
 import ProgressBar from "@/components/shared/ProgressBar";
 import StatusBadge from "@/components/shared/StatusBadge";
 import useSteps from "@/hooks/useSteps";
+import { getAgentForStep, accentClasses } from "@/lib/agents";
+import AgentIcon from "@/components/shared/AgentIcon";
 
 const statusIcons = {
   done: <CheckCircle2 className="w-5 h-5 text-emerald-500" />,
@@ -53,6 +55,17 @@ export default function Roadmap() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{step.nom}</p>
                 <p className="text-xs text-muted-foreground truncate">{step.objectif}</p>
+                {(() => {
+                  const agent = getAgentForStep(step.ordre);
+                  if (!agent) return null;
+                  const accent = accentClasses[agent.accent] || accentClasses.primary;
+                  return (
+                    <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs mt-1 ${accent.bg} ${accent.text}`}>
+                      <AgentIcon name={agent.icon} className="w-3 h-3" />
+                      {agent.shortName}
+                    </div>
+                  );
+                })()}
               </div>
               <StatusBadge status={step.statut} />
             </div>
