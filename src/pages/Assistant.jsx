@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
 import StatusBadge from "@/components/shared/StatusBadge";
-import { getSpecializedAgents, accentClasses } from "@/lib/agents";
+import { getSpecializedAgents, getAgentForStep, accentClasses } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 const quickButtons = [
@@ -45,7 +45,7 @@ export default function Assistant() {
   }, [messages]);
 
   const buildSystemContext = () => {
-    let context = `Tu es un coach expert en dropshipping et ecommerce. Tu guides l'utilisateur étape par étape vers sa première vente. Tu es direct, actionnable et bienveillant. Réponds toujours en français, de manière concise.\n\n`;
+    let context = `Tu es le Coach Dropshipping Principal du système First Sale OS. Tu guides un entrepreneur solo étape par étape vers sa première vente. Tu es direct, actionnable et bienveillant. Réponds toujours en français.\n\n`;
 
     if (activeStep) {
       context += `ÉTAPE ACTIVE: ${activeStep.ordre}. ${activeStep.nom}\n`;
@@ -53,23 +53,31 @@ export default function Assistant() {
       context += `Statut: ${activeStep.statut}\n`;
       if (activeStep.checklist) context += `Checklist: ${activeStep.checklist.join(", ")}\n`;
       if (activeStep.raison_blocage) context += `Blocage: ${activeStep.raison_blocage}\n`;
+
+      const specializedAgent = getAgentForStep(activeStep.ordre);
+      if (specializedAgent) {
+        context += `\nRÔLE À ADOPTER: ${specializedAgent.name} — ${specializedAgent.role}\n`;
+        context += `Adopte explicitement ce rôle et sa logique. Mentionne-le dans la section Contexte lu.\n`;
+      }
     }
 
     if (project) {
       context += `\nPROJET:\n`;
       context += `Produit: ${project.produit || "non défini"} | Niche: ${project.niche || "non définie"} | Plateforme: ${project.plateforme || "non définie"} | Canal: ${project.canal || "non défini"}\n`;
+      if (project.avatar) context += `Avatar client: ${project.avatar}\n`;
+      if (project.offre) context += `Offre: ${project.offre}\n`;
     }
 
     if (nextStep) {
       context += `\nPROCHAINE ÉTAPE: ${nextStep.ordre}. ${nextStep.nom} — ${nextStep.objectif}\n`;
     }
 
-    context += `\nRÔLES SPÉCIALISÉS INTERNES (adopte leur logique quand pertinent, mentionne le rôle utilisé):\n`;
-    context += `- Coach Niche: évalue niche (demande, différenciation, concurrence, viabilité)\n`;
-    context += `- Validateur Produit: valide produit (marge, fournisseur, sourcing, livraison, risques)\n`;
-    context += `- Builder Offre: structure offre (positionnement, bénéfices, objections, FAQ, page produit, pricing)\n`;
-    context += `- Stratégiste Créatif: angles pub, hooks, concepts UGC, variations de messaging\n`;
-    context += `- Analyste Acquisition: interprète métriques, identifie goulots (CTR, CPC, CVR), recommande actions\n`;
+    context += `\nFORMAT DE RÉPONSE OBLIGATOIRE — 4 sections avec titres markdown:\n`;
+    context += `**Contexte lu** — Rappelle en 1-2 phrases les données projet et étape que tu as lues, et le rôle adopté.\n`;
+    context += `**Diagnostic** — Analyse la situation par rapport à l'étape active. Identifie le problème ou l'opportunité principal.\n`;
+    context += `**Recommandation** — 2-3 conseils concrets et spécifiques utilisant les données réelles du projet (produit, avatar, canal).\n`;
+    context += `**Prochaine action** — Une seule action concrète et immédiate. Sois précis : quoi faire, comment, et avec quel outil.\n`;
+    context += `\nRÈGLES ANTI-GÉNÉRIQUE: Pas de conseils génériques. Réfère-toi aux données réelles (produit, niche, avatar, canal). Ne dis jamais "cela dépend" sans donner un point de départ. Ne répète pas le même conseil dans plusieurs sections.\n`;
     return context;
   };
 
@@ -92,7 +100,7 @@ export default function Assistant() {
     for (const m of recent) {
       prompt += `${m.role === "user" ? "Utilisateur" : "Coach"}: ${m.contenu}\n`;
     }
-    prompt += `Utilisateur: ${text}\n\nRéponds de manière concise et actionnable. Guide vers la prochaine action concrète.`;
+    prompt += `Utilisateur: ${text}\n\nRéponds obligatoirement avec les 4 sections: Contexte lu, Diagnostic, Recommandation, Prochaine action.`;
 
     if (text === "C'est fait") {
       prompt += `\n\nL'utilisateur dit avoir terminé. Vérifie la checklist et la preuve de complétion. S'il manque quelque chose, guide-le précisément. Sinon, félicite-le et indique comment valider dans la page Étape.`;
