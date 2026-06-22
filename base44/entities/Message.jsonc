@@ -1,0 +1,33 @@
+{
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "contenu": {
+      "type": "string",
+      "title": "Contenu",
+      "x-textarea": true
+    },
+    "role": {
+      "type": "string",
+      "title": "R\u00f4le",
+      "enum": [
+        "user",
+        "assistant"
+      ]
+    },
+    "step_id": {
+      "type": "string",
+      "title": "\u00c9tape associ\u00e9e",
+      "x-reference": "Step"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Horodatage"
+    }
+  },
+  "required": [
+    "contenu",
+    "role"
+  ]
+}

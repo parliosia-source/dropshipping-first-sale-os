@@ -1,0 +1,75 @@
+{
+  "name": "Project",
+  "type": "object",
+  "properties": {
+    "produit": {
+      "type": "string",
+      "title": "Produit"
+    },
+    "niche": {
+      "type": "string",
+      "title": "Niche"
+    },
+    "offre": {
+      "type": "string",
+      "title": "Offre"
+    },
+    "avatar": {
+      "type": "string",
+      "title": "Avatar client",
+      "x-textarea": true
+    },
+    "canal": {
+      "type": "string",
+      "title": "Canal d'acquisition"
+    },
+    "plateforme": {
+      "type": "string",
+      "title": "Plateforme"
+    },
+    "objectif_premiere_vente_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date objectif 1\u00e8re vente"
+    },
+    "kpi1_nom": {
+      "type": "string",
+      "title": "KPI 1 - Nom"
+    },
+    "kpi1_cible": {
+      "type": "string",
+      "title": "KPI 1 - Cible"
+    },
+    "kpi1_actuel": {
+      "type": "string",
+      "title": "KPI 1 - Actuel"
+    },
+    "kpi2_nom": {
+      "type": "string",
+      "title": "KPI 2 - Nom"
+    },
+    "kpi2_cible": {
+      "type": "string",
+      "title": "KPI 2 - Cible"
+    },
+    "kpi2_actuel": {
+      "type": "string",
+      "title": "KPI 2 - Actuel"
+    },
+    "kpi3_nom": {
+      "type": "string",
+      "title": "KPI 3 - Nom"
+    },
+    "kpi3_cible": {
+      "type": "string",
+      "title": "KPI 3 - Cible"
+    },
+    "kpi3_actuel": {
+      "type": "string",
+      "title": "KPI 3 - Actuel"
+    }
+  },
+  "required": [
+    "produit"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Step",
+  "type": "object",
+  "properties": {
+    "nom": {
+      "type": "string",
+      "title": "Nom"
+    },
+    "objectif": {
+      "type": "string",
+      "title": "Objectif",
+      "x-textarea": true
+    },
+    "importance": {
+      "type": "string",
+      "title": "Importance",
+      "x-textarea": true
+    },
+    "livrable": {
+      "type": "string",
+      "title": "Livrable",
+      "x-textarea": true
+    },
+    "checklist": {
+      "type": "array",
+      "title": "Checklist",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ordre": {
+      "type": "number",
+      "title": "Ordre"
+    },
+    "statut": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "todo",
+        "active",
+        "done",
+        "blocked"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes",
+      "x-textarea": true
+    },
+    "preuve_completion": {
+      "type": "string",
+      "title": "Preuve de compl\u00e9tion",
+      "x-textarea": true
+    },
+    "raison_blocage": {
+      "type": "string",
+      "title": "Raison du blocage",
+      "x-textarea": true
+    },
+    "checklist_done": {
+      "type": "array",
+      "title": "Checklist compl\u00e9t\u00e9e",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  "required": [
+    "nom",
+    "ordre",
+    "statut"
+  ]
+}
