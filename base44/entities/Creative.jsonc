@@ -1,0 +1,66 @@
+{
+  "name": "Creative",
+  "type": "object",
+  "properties": {
+    "campaign_id": {
+      "type": "string",
+      "title": "ID de la campagne",
+      "x-reference": "Campaign"
+    },
+    "nom": {
+      "type": "string",
+      "title": "Nom de la cr\u00e9ative"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "enum": [
+        "video_ugc",
+        "video_pro",
+        "image_static",
+        "carrousel"
+      ]
+    },
+    "format": {
+      "type": "string",
+      "title": "Format",
+      "enum": [
+        "9:16",
+        "1:1",
+        "16:9",
+        "4:5"
+      ]
+    },
+    "hook": {
+      "type": "string",
+      "title": "Hook",
+      "x-textarea": true
+    },
+    "angle": {
+      "type": "string",
+      "title": "Angle cr\u00e9atif",
+      "x-textarea": true
+    },
+    "file_url": {
+      "type": "string",
+      "title": "URL du fichier"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "draft",
+        "in_production",
+        "ready",
+        "live",
+        "paused"
+      ],
+      "default": "draft"
+    }
+  },
+  "required": [
+    "campaign_id",
+    "nom",
+    "type"
+  ]
+}

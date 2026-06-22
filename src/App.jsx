@@ -20,6 +20,7 @@ import ProjectPage from '@/pages/ProjectPage';
 import Dashboard from '@/pages/Dashboard';
 import Tasks from '@/pages/Tasks';
 import Recommendations from '@/pages/Recommendations';
+import GuidedStep from '@/pages/GuidedStep';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -58,6 +59,7 @@ const AuthenticatedApp = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/etape/:ordre" element={<GuidedStep />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

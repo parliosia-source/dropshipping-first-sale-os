@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Zap, Target, Package, Tag, Globe, Megaphone, CalendarClock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/shared/ProgressBar";
@@ -11,6 +11,7 @@ import { DOMAINS, getDomainAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function Home() {
+  const navigate = useNavigate();
   const { activeStep, progress, doneCount, steps, loading } = useSteps();
   const { project } = useProject();
 
@@ -79,6 +80,14 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* CTA Parcours */}
+      <button
+        onClick={() => navigate(`/etape/${activeStep?.ordre || 1}`)}
+        className="w-full py-4 bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-semibold rounded-xl transition-colors"
+      >
+        🚀 Démarrer le parcours
+      </button>
 
       {/* Project snapshot */}
       <div className="bg-card rounded-2xl border p-5">

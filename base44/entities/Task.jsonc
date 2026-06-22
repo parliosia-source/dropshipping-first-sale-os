@@ -1,0 +1,60 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "step_id": {
+      "type": "string",
+      "title": "ID de l'\u00e9tape",
+      "x-reference": "Step"
+    },
+    "nom": {
+      "type": "string",
+      "title": "Nom de la t\u00e2che"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "x-textarea": true
+    },
+    "agent_source": {
+      "type": "string",
+      "title": "Agent source"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorit\u00e9",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium"
+    },
+    "statut": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "pending",
+        "in_progress",
+        "done",
+        "cancelled"
+      ],
+      "default": "pending"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Date de compl\u00e9tion"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes utilisateur",
+      "x-textarea": true
+    }
+  },
+  "required": [
+    "step_id",
+    "nom",
+    "agent_source"
+  ]
+}

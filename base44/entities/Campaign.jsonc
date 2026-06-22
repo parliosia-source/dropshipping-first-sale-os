@@ -1,0 +1,69 @@
+{
+  "name": "Campaign",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "title": "ID du projet",
+      "x-reference": "Project"
+    },
+    "nom": {
+      "type": "string",
+      "title": "Nom de la campagne"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Plateforme",
+      "enum": [
+        "meta",
+        "tiktok",
+        "google",
+        "snapchat",
+        "influencer"
+      ]
+    },
+    "budget_daily": {
+      "type": "number",
+      "title": "Budget quotidien (\u20ac)"
+    },
+    "budget_total": {
+      "type": "number",
+      "title": "Budget total (\u20ac)"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date de d\u00e9but"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date de fin"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "draft",
+        "active",
+        "paused",
+        "completed"
+      ],
+      "default": "draft"
+    },
+    "objective": {
+      "type": "string",
+      "title": "Objectif"
+    },
+    "target_audience": {
+      "type": "string",
+      "title": "Audience cible",
+      "x-textarea": true
+    }
+  },
+  "required": [
+    "project_id",
+    "nom",
+    "platform"
+  ]
+}

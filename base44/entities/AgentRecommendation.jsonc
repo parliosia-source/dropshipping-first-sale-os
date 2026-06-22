@@ -1,0 +1,66 @@
+{
+  "name": "AgentRecommendation",
+  "type": "object",
+  "properties": {
+    "step_id": {
+      "type": "string",
+      "title": "ID de l'\u00e9tape",
+      "x-reference": "Step"
+    },
+    "agent_name": {
+      "type": "string",
+      "title": "Nom de la fonction"
+    },
+    "title": {
+      "type": "string",
+      "title": "Titre"
+    },
+    "content": {
+      "type": "string",
+      "title": "Contenu",
+      "x-textarea": true
+    },
+    "category": {
+      "type": "string",
+      "title": "Cat\u00e9gorie",
+      "enum": [
+        "action",
+        "insight",
+        "warning",
+        "optimization"
+      ],
+      "default": "insight"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorit\u00e9",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium"
+    },
+    "status": {
+      "type": "string",
+      "title": "Statut",
+      "enum": [
+        "pending",
+        "applied",
+        "dismissed"
+      ],
+      "default": "pending"
+    },
+    "applied_date": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Date d'application"
+    }
+  },
+  "required": [
+    "step_id",
+    "agent_name",
+    "title",
+    "content"
+  ]
+}

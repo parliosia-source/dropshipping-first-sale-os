@@ -1,10 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, MessageSquare, Map, Zap, FolderOpen, LayoutDashboard, CheckSquare, Lightbulb } from "lucide-react";
+import { Home, Map, Zap, FolderOpen, LayoutDashboard, CheckSquare, Lightbulb } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Accueil", icon: Home },
-  { path: "/assistant", label: "Assistant", icon: MessageSquare },
   { path: "/roadmap", label: "Roadmap", icon: Map },
   { path: "/active-step", label: "Étape", icon: Zap },
   { path: "/project", label: "Projet", icon: FolderOpen },
