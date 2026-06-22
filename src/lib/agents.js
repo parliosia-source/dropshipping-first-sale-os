@@ -1,3 +1,12 @@
+/**
+ * Agent system configuration for First Sale OS.
+ *
+ * Architecture: 1 orchestrator (assistant_principal) + 5 specialized roles.
+ * Each step (1-11) maps to a specialized agent via STEP_AGENT_MAP.
+ *
+ * To add/edit an agent: update AGENTS + STEP_AGENT_MAP + agents/<id>.json
+ * To change step-to-agent routing: update STEP_AGENT_MAP only
+ */
 export const AGENTS = [
   {
     id: "assistant_principal",
@@ -79,5 +88,5 @@ export const accentClasses = {
 };
 
 export const getAgentForStep = (ordre) => AGENTS.find((a) => a.id === STEP_AGENT_MAP[ordre]);
-export const getAgentById = (id) => AGENTS.find((a) => a.id === id);
+export const getAgentAccent = (agent) => accentClasses[agent?.accent] || accentClasses.primary;
 export const getSpecializedAgents = () => AGENTS.filter((a) => a.id !== "assistant_principal");

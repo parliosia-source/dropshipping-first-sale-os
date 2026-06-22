@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import StatusBadge from "@/components/shared/StatusBadge";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
-import { getAgentForStep, accentClasses } from "@/lib/agents";
+import { getAgentForStep, getAgentAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function ActiveStep() {
@@ -100,11 +101,7 @@ export default function ActiveStep() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!step) {
@@ -166,7 +163,7 @@ export default function ActiveStep() {
       {(() => {
         const agent = getAgentForStep(step.ordre);
         if (!agent) return null;
-        const accent = accentClasses[agent.accent] || accentClasses.primary;
+        const accent = getAgentAccent(agent);
         return (
           <div className={`rounded-2xl border p-4 flex items-center gap-3 ${accent.bg} ${accent.border}`}>
             <AgentIcon name={agent.icon} className={`w-5 h-5 ${accent.text}`} />

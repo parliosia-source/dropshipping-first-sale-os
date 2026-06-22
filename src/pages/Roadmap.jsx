@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { CheckCircle2, Circle, Loader2, AlertTriangle } from "lucide-react";
 import ProgressBar from "@/components/shared/ProgressBar";
 import StatusBadge from "@/components/shared/StatusBadge";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import useSteps from "@/hooks/useSteps";
-import { getAgentForStep, accentClasses } from "@/lib/agents";
+import { getAgentForStep, getAgentAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 const statusIcons = {
@@ -18,11 +19,7 @@ export default function Roadmap() {
   const { steps, progress, doneCount, loading } = useSteps();
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -58,7 +55,7 @@ export default function Roadmap() {
                 {(() => {
                   const agent = getAgentForStep(step.ordre);
                   if (!agent) return null;
-                  const accent = accentClasses[agent.accent] || accentClasses.primary;
+                  const accent = getAgentAccent(agent);
                   return (
                     <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs mt-1 ${accent.bg} ${accent.text}`}>
                       <AgentIcon name={agent.icon} className="w-3 h-3" />

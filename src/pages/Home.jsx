@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Target, Package, Tag, Globe, Megaphone, CalendarClock, CheckCircle2, FileText, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowRight, Zap, Target, Package, Tag, Globe, Megaphone, CalendarClock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProgressBar from "@/components/shared/ProgressBar";
 import StatusBadge from "@/components/shared/StatusBadge";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
-import { AGENTS, accentClasses } from "@/lib/agents";
+import { AGENTS, getAgentAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function Home() {
@@ -14,11 +15,7 @@ export default function Home() {
   const { project } = useProject();
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const snapshotItems = [
@@ -123,7 +120,7 @@ export default function Home() {
         <p className="text-xs text-muted-foreground mb-4">1 orchestrateur + 5 rôles spécialisés derrière votre coach</p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {AGENTS.map((agent) => {
-            const accent = accentClasses[agent.accent] || accentClasses.primary;
+            const accent = getAgentAccent(agent);
             return (
               <div key={agent.id} className={`rounded-xl border p-3 ${accent.bg} ${accent.border}`}>
                 <div className="flex items-center gap-2 mb-1.5">

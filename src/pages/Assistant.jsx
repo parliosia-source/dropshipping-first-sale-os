@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Send, Loader2, Zap, ArrowRight, Circle } from "lucide-react";
+import { Send, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
 import StatusBadge from "@/components/shared/StatusBadge";
-import { getSpecializedAgents, getAgentForStep, accentClasses } from "@/lib/agents";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { getSpecializedAgents, getAgentForStep, getAgentAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 const quickButtons = [
@@ -148,7 +149,7 @@ export default function Assistant() {
         <div className="flex items-center gap-2 overflow-x-auto pt-3 mt-3 border-t">
           <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">Rôles spécialisés :</span>
           {getSpecializedAgents().map((agent) => {
-            const accent = accentClasses[agent.accent] || accentClasses.primary;
+            const accent = getAgentAccent(agent);
             return (
               <div key={agent.id} className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border flex-shrink-0 ${accent.bg} ${accent.border}`}>
                 <AgentIcon name={agent.icon} className={`w-3 h-3 ${accent.text}`} />
@@ -162,9 +163,7 @@ export default function Assistant() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-3 pb-4 pr-1">
         {loadingMessages ? (
-          <div className="flex items-center justify-center h-32">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
+          <LoadingSpinner className="h-32" />
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
             <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">

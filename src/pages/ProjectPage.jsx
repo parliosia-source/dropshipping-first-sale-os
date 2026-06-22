@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import useProject from "@/hooks/useProject";
 
 export default function ProjectPage() {
@@ -18,11 +19,7 @@ export default function ProjectPage() {
   }, [project, form]);
 
   if (loading || !form) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
