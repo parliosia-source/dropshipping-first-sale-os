@@ -7,7 +7,7 @@ import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
 import StatusBadge from "@/components/shared/StatusBadge";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
-import { getSpecializedAgents, getAgentForStep, getAgentAccent } from "@/lib/agents";
+import { DOMAINS, getDomainForStep, getDomainAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 const quickButtons = [
@@ -55,10 +55,10 @@ export default function Assistant() {
       if (activeStep.checklist) context += `Checklist: ${activeStep.checklist.join(", ")}\n`;
       if (activeStep.raison_blocage) context += `Blocage: ${activeStep.raison_blocage}\n`;
 
-      const specializedAgent = getAgentForStep(activeStep.ordre);
-      if (specializedAgent) {
-        context += `\nRÔLE À ADOPTER: ${specializedAgent.name} — ${specializedAgent.role}\n`;
-        context += `Adopte explicitement ce rôle et sa logique. Mentionne-le dans la section Contexte lu.\n`;
+      const domain = getDomainForStep(activeStep.ordre);
+      if (domain) {
+        context += `\nDOMAINE ASSOCIÉ: ${domain.name} — fonction backend ${domain.id}\n`;
+        context += `Réfère-toi à ce domaine dans ta réponse.\n`;
       }
     }
 
@@ -147,9 +147,9 @@ export default function Assistant() {
         </div>
         {/* Specialized agents strip */}
         <div className="flex items-center gap-2 overflow-x-auto pt-3 mt-3 border-t">
-          <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">Rôles spécialisés :</span>
-          {getSpecializedAgents().map((agent) => {
-            const accent = getAgentAccent(agent);
+          <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">Domaines :</span>
+          {DOMAINS.map((agent) => {
+            const accent = getDomainAccent(agent);
             return (
               <div key={agent.id} className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border flex-shrink-0 ${accent.bg} ${accent.border}`}>
                 <AgentIcon name={agent.icon} className={`w-3 h-3 ${accent.text}`} />

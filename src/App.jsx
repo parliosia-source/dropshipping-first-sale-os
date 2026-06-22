@@ -17,6 +17,9 @@ import Assistant from '@/pages/Assistant';
 import Roadmap from '@/pages/Roadmap';
 import ActiveStep from '@/pages/ActiveStep';
 import ProjectPage from '@/pages/ProjectPage';
+import Dashboard from '@/pages/Dashboard';
+import Tasks from '@/pages/Tasks';
+import Recommendations from '@/pages/Recommendations';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -52,6 +55,9 @@ const AuthenticatedApp = () => {
           <Route path="/active-step" element={<ActiveStep />} />
           <Route path="/step/:stepId" element={<ActiveStep />} />
           <Route path="/project" element={<ProjectPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/recommendations" element={<Recommendations />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

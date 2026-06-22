@@ -1,81 +1,35 @@
 /**
- * Agent system configuration for First Sale OS.
+ * Domain system configuration for First Sale OS.
  *
- * Architecture: 1 orchestrator (assistant_principal) + 5 specialized roles.
- * Each step (1-11) maps to a specialized agent via STEP_AGENT_MAP.
+ * Architecture: 1 in-app orchestrator agent (assistant_principal) + 8 backend function domains.
+ * Each step (1-11) maps to a domain via STEP_DOMAIN_MAP.
  *
- * To add/edit an agent: update AGENTS + STEP_AGENT_MAP + agents/<id>.json
- * To change step-to-agent routing: update STEP_AGENT_MAP only
+ * To add/edit a domain: update DOMAINS + STEP_DOMAIN_MAP + functions/<name>.js
+ * To change step-to-domain routing: update STEP_DOMAIN_MAP only
  */
-export const AGENTS = [
-  {
-    id: "assistant_principal",
-    name: "Assistant Principal",
-    shortName: "Principal",
-    role: "Orchestrateur & Coach",
-    description: "Guide l'utilisateur étape par étape jusqu'à la première vente. Coordonne les rôles spécialisés.",
-    icon: "Zap",
-    accent: "primary",
-  },
-  {
-    id: "niche_coach",
-    name: "Coach Niche",
-    shortName: "Niche",
-    role: "Sélection de niche",
-    description: "Évalue les idées de niche : demande, différenciation, concurrence, viabilité.",
-    icon: "Target",
-    accent: "blue",
-  },
-  {
-    id: "product_validator",
-    name: "Validateur Produit",
-    shortName: "Produit",
-    role: "Validation & Sourcing",
-    description: "Valide le potentiel produit : marge, fournisseur, livraison, valeur perçue.",
-    icon: "Package",
-    accent: "emerald",
-  },
-  {
-    id: "offer_builder",
-    name: "Builder Offre",
-    shortName: "Offre",
-    role: "Offre & Page produit",
-    description: "Structure l'offre, écrit le positionnement, les bénéfices, la page produit.",
-    icon: "FileText",
-    accent: "amber",
-  },
-  {
-    id: "creative_strategist",
-    name: "Stratégiste Créatif",
-    shortName: "Créatif",
-    role: "Contenu & Angles pub",
-    description: "Génère angles, hooks, concepts UGC, variations de messaging.",
-    icon: "Sparkles",
-    accent: "purple",
-  },
-  {
-    id: "acquisition_analyst",
-    name: "Analyste Acquisition",
-    shortName: "Acquisition",
-    role: "Analyse & Optimisation",
-    description: "Interprète les métriques, identifie les goulots, recommande les actions.",
-    icon: "TrendingUp",
-    accent: "rose",
-  },
+export const DOMAINS = [
+  { id: "analyzeNicheAndProduct", name: "Niche & Produit", shortName: "Niche", icon: "Target", accent: "blue" },
+  { id: "buildOfferAndPositioning", name: "Offre & Positionnement", shortName: "Offre", icon: "FileText", accent: "amber" },
+  { id: "createBrandIdentity", name: "Branding", shortName: "Marque", icon: "Sparkles", accent: "purple" },
+  { id: "optimizeProductPage", name: "Page Produit", shortName: "Page", icon: "Layout", accent: "emerald" },
+  { id: "designCreativeStrategy", name: "Créatives", shortName: "Créatif", icon: "Megaphone", accent: "rose" },
+  { id: "setupMetaCampaign", name: "Meta Ads", shortName: "Ads", icon: "TrendingUp", accent: "blue" },
+  { id: "setupTracking", name: "Tracking", shortName: "Tracking", icon: "Activity", accent: "emerald" },
+  { id: "analyzeKPIs", name: "Analyse KPI", shortName: "KPI", icon: "BarChart2", accent: "rose" },
 ];
 
-export const STEP_AGENT_MAP = {
-  1: "niche_coach",
-  2: "product_validator",
-  3: "product_validator",
-  4: "offer_builder",
-  5: "offer_builder",
-  6: "product_validator",
-  7: "offer_builder",
-  8: "creative_strategist",
-  9: "creative_strategist",
-  10: "acquisition_analyst",
-  11: "acquisition_analyst",
+export const STEP_DOMAIN_MAP = {
+  1: "analyzeNicheAndProduct",
+  2: "analyzeNicheAndProduct",
+  3: "analyzeNicheAndProduct",
+  4: "buildOfferAndPositioning",
+  5: "buildOfferAndPositioning",
+  6: "createBrandIdentity",
+  7: "optimizeProductPage",
+  8: "designCreativeStrategy",
+  9: "setupMetaCampaign",
+  10: "setupTracking",
+  11: "analyzeKPIs",
 };
 
 export const accentClasses = {
@@ -87,6 +41,5 @@ export const accentClasses = {
   rose: { bg: "bg-rose-50", text: "text-rose-600", border: "border-rose-200" },
 };
 
-export const getAgentForStep = (ordre) => AGENTS.find((a) => a.id === STEP_AGENT_MAP[ordre]);
-export const getAgentAccent = (agent) => accentClasses[agent?.accent] || accentClasses.primary;
-export const getSpecializedAgents = () => AGENTS.filter((a) => a.id !== "assistant_principal");
+export const getDomainForStep = (ordre) => DOMAINS.find((d) => d.id === STEP_DOMAIN_MAP[ordre]);
+export const getDomainAccent = (domain) => accentClasses[domain?.accent] || accentClasses.primary;

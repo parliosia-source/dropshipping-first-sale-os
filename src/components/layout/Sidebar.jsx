@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, MessageSquare, Map, Zap, FolderOpen } from "lucide-react";
+import { Home, MessageSquare, Map, Zap, FolderOpen, LayoutDashboard, CheckSquare, Lightbulb } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Accueil", icon: Home },
@@ -8,6 +8,9 @@ const navItems = [
   { path: "/roadmap", label: "Roadmap", icon: Map },
   { path: "/active-step", label: "Étape", icon: Zap },
   { path: "/project", label: "Projet", icon: FolderOpen },
+  { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/tasks", label: "Tâches", icon: CheckSquare },
+  { path: "/recommendations", label: "Recommandations", icon: Lightbulb },
 ];
 
 export default function Sidebar() {

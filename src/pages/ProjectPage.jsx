@@ -41,6 +41,10 @@ export default function ProjectPage() {
     { key: "canal", label: "Canal d'acquisition", type: "input" },
     { key: "plateforme", label: "Plateforme", type: "input" },
     { key: "objectif_premiere_vente_date", label: "Date objectif 1ère vente", type: "date" },
+    { key: "brand_name", label: "Nom de marque", type: "input" },
+    { key: "brand_values", label: "Valeurs de marque", type: "textarea" },
+    { key: "brand_tone", label: "Ton de voix", type: "input" },
+    { key: "positioning_statement", label: "Positioning statement", type: "textarea" },
   ];
 
   const kpis = [

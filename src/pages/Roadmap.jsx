@@ -5,7 +5,7 @@ import ProgressBar from "@/components/shared/ProgressBar";
 import StatusBadge from "@/components/shared/StatusBadge";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import useSteps from "@/hooks/useSteps";
-import { getAgentForStep, getAgentAccent } from "@/lib/agents";
+import { getDomainForStep, getDomainAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 const statusIcons = {
@@ -53,9 +53,9 @@ export default function Roadmap() {
                 <p className="text-sm font-semibold truncate">{step.nom}</p>
                 <p className="text-xs text-muted-foreground truncate">{step.objectif}</p>
                 {(() => {
-                  const agent = getAgentForStep(step.ordre);
+                  const agent = getDomainForStep(step.ordre);
                   if (!agent) return null;
-                  const accent = getAgentAccent(agent);
+                  const accent = getDomainAccent(agent);
                   return (
                     <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs mt-1 ${accent.bg} ${accent.text}`}>
                       <AgentIcon name={agent.icon} className="w-3 h-3" />

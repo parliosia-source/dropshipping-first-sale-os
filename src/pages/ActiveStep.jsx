@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import StatusBadge from "@/components/shared/StatusBadge";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import { useToast } from "@/components/ui/use-toast";
-import { getAgentForStep, getAgentAccent } from "@/lib/agents";
+import { getDomainForStep, getDomainAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function ActiveStep() {
@@ -161,14 +161,14 @@ export default function ActiveStep() {
 
       {/* Best agent for this step */}
       {(() => {
-        const agent = getAgentForStep(step.ordre);
+        const agent = getDomainForStep(step.ordre);
         if (!agent) return null;
-        const accent = getAgentAccent(agent);
+        const accent = getDomainAccent(agent);
         return (
           <div className={`rounded-2xl border p-4 flex items-center gap-3 ${accent.bg} ${accent.border}`}>
             <AgentIcon name={agent.icon} className={`w-5 h-5 ${accent.text}`} />
             <div>
-              <p className="text-xs text-muted-foreground mb-0.5">Rôle spécialisé pour cette étape</p>
+              <p className="text-xs text-muted-foreground mb-0.5">Domaine spécialisé pour cette étape</p>
               <p className={`text-sm font-semibold ${accent.text}`}>{agent.name} — {agent.role}</p>
             </div>
           </div>

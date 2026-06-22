@@ -7,7 +7,7 @@ import StatusBadge from "@/components/shared/StatusBadge";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
-import { AGENTS, getAgentAccent } from "@/lib/agents";
+import { DOMAINS, getDomainAccent } from "@/lib/agents";
 import AgentIcon from "@/components/shared/AgentIcon";
 
 export default function Home() {
@@ -117,10 +117,10 @@ export default function Home() {
       {/* Active support system */}
       <div className="bg-card rounded-2xl border p-5">
         <h2 className="text-sm font-semibold font-heading mb-1">Système d'assistance actif</h2>
-        <p className="text-xs text-muted-foreground mb-4">1 orchestrateur + 5 rôles spécialisés derrière votre coach</p>
+        <p className="text-xs text-muted-foreground mb-4">1 orchestrateur + 8 domaines spécialisés (fonctions backend)</p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {AGENTS.map((agent) => {
-            const accent = getAgentAccent(agent);
+          {DOMAINS.map((agent) => {
+            const accent = getDomainAccent(agent);
             return (
               <div key={agent.id} className={`rounded-xl border p-3 ${accent.bg} ${accent.border}`}>
                 <div className="flex items-center gap-2 mb-1.5">
