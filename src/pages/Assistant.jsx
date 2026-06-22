@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Zap, ArrowRight, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import useSteps from "@/hooks/useSteps";
 import useProject from "@/hooks/useProject";
+import StatusBadge from "@/components/shared/StatusBadge";
 
 const quickButtons = [
   { label: "C'est fait", value: "C'est fait" },
   { label: "Je suis bloqué", value: "Je suis bloqué" },
   { label: "Prochaine étape", value: "Prochaine étape" },
+];
+
+const suggestions = [
+  "Comment valider cette étape ?",
+  "Donne-moi un plan d'action concret",
+  "Quels outils me conseilles-tu ?",
+  "Vérifie ma checklist",
 ];
 
 export default function Assistant() {
@@ -35,23 +43,19 @@ export default function Assistant() {
   }, [messages]);
 
   const buildSystemContext = () => {
-    let context = `Tu es un assistant expert en dropshipping et ecommerce. Tu guides l'utilisateur étape par étape vers sa première vente. Réponds toujours en français, de manière concise et actionnable.\n\n`;
-    
+    let context = `Tu es un coach expert en dropshipping et ecommerce. Tu guides l'utilisateur étape par étape vers sa première vente. Tu es direct, actionnable et bienveillant. Réponds toujours en français, de manière concise.\n\n`;
+
     if (activeStep) {
       context += `ÉTAPE ACTIVE: ${activeStep.ordre}. ${activeStep.nom}\n`;
       context += `Objectif: ${activeStep.objectif}\n`;
       context += `Statut: ${activeStep.statut}\n`;
+      if (activeStep.checklist) context += `Checklist: ${activeStep.checklist.join(", ")}\n`;
       if (activeStep.raison_blocage) context += `Blocage: ${activeStep.raison_blocage}\n`;
     }
-    
+
     if (project) {
       context += `\nPROJET:\n`;
-      context += `Produit: ${project.produit || "non défini"}\n`;
-      context += `Niche: ${project.niche || "non définie"}\n`;
-      context += `Offre: ${project.offre || "non définie"}\n`;
-      context += `Avatar: ${project.avatar || "non défini"}\n`;
-      context += `Canal: ${project.canal || "non défini"}\n`;
-      context += `Plateforme: ${project.plateforme || "non définie"}\n`;
+      context += `Produit: ${project.produit || "non défini"} | Niche: ${project.niche || "non définie"} | Plateforme: ${project.plateforme || "non définie"} | Canal: ${project.canal || "non défini"}\n`;
     }
 
     if (nextStep) {
@@ -78,16 +82,16 @@ export default function Assistant() {
     prompt += `\nHistorique récent:\n`;
     const recent = messages.slice(-6);
     for (const m of recent) {
-      prompt += `${m.role === "user" ? "Utilisateur" : "Assistant"}: ${m.contenu}\n`;
+      prompt += `${m.role === "user" ? "Utilisateur" : "Coach"}: ${m.contenu}\n`;
     }
     prompt += `Utilisateur: ${text}\n\nRéponds de manière concise et actionnable. Guide vers la prochaine action concrète.`;
 
     if (text === "C'est fait") {
-      prompt += `\n\nL'utilisateur dit avoir terminé l'action. Vérifie s'il a bien complété la checklist et ajouté une preuve de complétion. S'il manque quelque chose, guide-le. Sinon, félicite-le et indique comment valider l'étape dans la page "Étape active".`;
+      prompt += `\n\nL'utilisateur dit avoir terminé. Vérifie la checklist et la preuve de complétion. S'il manque quelque chose, guide-le précisément. Sinon, félicite-le et indique comment valider dans la page Étape.`;
     } else if (text === "Je suis bloqué") {
-      prompt += `\n\nL'utilisateur est bloqué. Aide-le à identifier et formuler la raison du blocage. Propose des solutions concrètes et des ressources. Si le blocage persiste, suggère-lui de marquer l'étape comme bloquée dans la page "Étape active" avec la raison.`;
+      prompt += `\n\nL'utilisateur est bloqué. Aide-le à identifier la cause, propose 2-3 solutions concrètes. Suggère de documenter la raison dans la page Étape si le blocage persiste.`;
     } else if (text === "Prochaine étape") {
-      prompt += `\n\nL'utilisateur veut un aperçu de la prochaine étape. Décris brièvement ce qui l'attend, son objectif et les premiers pas concrets à accomplir.`;
+      prompt += `\n\nDécris brièvement la prochaine étape, son objectif et les 2 premiers pas concrets à accomplir.`;
     }
 
     const response = await base44.integrations.Core.InvokeLLM({ prompt });
@@ -104,23 +108,57 @@ export default function Assistant() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold font-heading tracking-tight">Assistant</h1>
-        {activeStep && (
-          <p className="text-sm text-muted-foreground mt-1">
-            Étape en cours : {activeStep.ordre}. {activeStep.nom}
-          </p>
-        )}
+      {/* Context header */}
+      <div className="bg-card rounded-2xl border p-4 mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Zap className="w-4 h-4 text-primary" />
+          <h1 className="text-lg font-bold font-heading tracking-tight">Coach</h1>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3 text-sm">
+          <div>
+            <p className="text-xs text-muted-foreground mb-0.5">Étape active</p>
+            <p className="font-semibold truncate">{activeStep ? `${activeStep.ordre}. ${activeStep.nom}` : "—"}</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground mb-0.5">Statut</p>
+            {activeStep ? <StatusBadge status={activeStep.statut} /> : <span className="text-muted-foreground">—</span>}
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground mb-0.5">Prochaine étape</p>
+            <p className="font-semibold truncate">{nextStep ? `${nextStep.ordre}. ${nextStep.nom}` : "—"}</p>
+          </div>
+        </div>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-3 pb-4 pr-1">
         {loadingMessages ? (
           <div className="flex items-center justify-center h-32">
             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         ) : messages.length === 0 ? (
-          <div className="flex items-center justify-center h-32">
-            <p className="text-sm text-muted-foreground">Envoyez un message pour commencer.</p>
+          <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Zap className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Prêt à démarrer ?</p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs">
+                Je suis votre coach dropshipping. Posez une question ou choisissez une suggestion.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center max-w-md">
+              {suggestions.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => sendMessage(s)}
+                  disabled={sending}
+                  className="text-xs px-3 py-1.5 rounded-full border bg-card hover:bg-muted/50 hover:border-primary/30 transition-colors"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
         ) : (
           messages.map((msg) => (
@@ -131,7 +169,7 @@ export default function Assistant() {
                   : "bg-card border rounded-bl-md"
               }`}>
                 {msg.role === "assistant" ? (
-                  <ReactMarkdown className="prose prose-sm max-w-none [&>p]:mb-2 [&>ul]:mb-2 [&>ol]:mb-2">
+                  <ReactMarkdown className="prose prose-sm max-w-none [&>p]:mb-2 [&>ul]:mb-2 [&>ol]:mb-2 [&>li]:mb-1">
                     {msg.contenu}
                   </ReactMarkdown>
                 ) : (
@@ -151,6 +189,7 @@ export default function Assistant() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Input */}
       <div className="border-t pt-3 space-y-3">
         <div className="flex gap-2 flex-wrap">
           {quickButtons.map(({ label, value }) => (
